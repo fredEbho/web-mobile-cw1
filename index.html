@@ -10,9 +10,12 @@
 <div id="app">
   <header>
     <h1 v-text="sitename"></h1>
-    <button :disabled="cartItemCount < 1" v-on:click="showCheckout">
+    <button v-if="step === 1" :disabled="cartItemCount < 1" v-on:click="showCheckout">
       {{cartItemCount}}
-      <span  class="fas fa-cart-plus"></span>  {{step === 1 ? 'View Shopping Cart' : 'Back To Lessons'}}
+      <span  class="fas fa-cart-plus"></span>  View Shopping Cart
+    </button>
+    <button v-else v-on:click="showLessons">
+      Back To Lessons
     </button>
   </header>
   <main>
@@ -119,6 +122,9 @@
       },
       showCheckout(){
         this.step = 2;
+      },
+      showLessons(){
+        this.step = 1;
       },
       submitForm(){
         alert("Order Submitted.")
