@@ -152,6 +152,9 @@
       cartItemCount: function () {
         return this.cart.length;
       },
+      canCheckout(){
+        this.order.name.length > 0 && this.order.phone.length > 0 && /^[a-zA-Z]+$/.test(this.order.name);
+      }
     }
   });
 </script>
