@@ -1,10 +1,20 @@
-[
+ [
   {
     "id": 1001,
-    "subject": "Cat Food, 25lb bag",
+    "subject": "Math",
     "location": "London",
     "price": 2000,
     "icon" :"images/cat.jpeg",
-    "availableInventory": 5
-  }
+    "availableInventory": 5,
+    "cart_quantity": 0
+  },
+   {
+     "id": 1002,
+     "subject": "English",
+     "location": "Dubai",
+     "price": 2000,
+     "icon" :"images/cat.jpeg",
+     "availableInventory": 5,
+     "cart_quantity": 0
+   }
 ]

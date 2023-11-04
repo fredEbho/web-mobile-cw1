@@ -24,14 +24,10 @@
         <p>Subject: {{lesson.subject}}</p>
         <p>Location: {{lesson.location}}</p>
         <p>Price: {{lesson.price}}</p>
-        <p>Spaces: {{lesson.availableInventory}}</p>
-        <button :disabled="!canAddToCart(lesson)" v-on:click="addToCart">
+        <p>Spaces: {{lesson.availableInventory - lesson.cart_quantity}}</p>
+        <button :disabled="!canAddToCart(lesson)" v-on:click="addToCart(lesson)">
           Add to cart
         </button>
-        <div>
-          <span v-for="n in product.rating">★</span>
-          <span v-for="n in 5 - product.rating">☆</span>
-        </div>
       </div>
     </div>
     <form v-else>
@@ -56,34 +52,46 @@
 </div>
 
 
-<script type="text/javascript">
-  import lessonsData from "js/lessons.json"
+<script  type="module">
+  import lessons from "/js/lessons.json" assert { type: 'json' };
   var webstore = new Vue({
     el: '#app',
-    data: {
-      step: 1,
-      sitename: 'Knowledge Bank Store',
-      lessons: lessonsData,
-      order: {
-        name: '',
-        phone: '',
-      },
-      cart: [],
+    data (){
+      return {
+        step: 1,
+        lessons,
+        sitename: 'Knowledge Bank Store',
+        order: {
+          name: '',
+          phone: '',
+        },
+        cart: [],
 
-    },
+      }
+  },
     methods: {
-      addToCart: function(){
-        this.cart.push(this.product.id)
+      isInCart(land){
+        return this.cart.find( ({ id }) => id === land.id );
+      },
+      addToCart: function(lesson){
+        let item = this.cart.find( ({ id }) => id === lesson.id );
+        if (item){
+          item.cart_quantity += 1;
+        }
+        else {
+          lesson.cart_quantity = 1;
+          this.cart.push(lesson);
+        }
       },
       showCheckout(){
-        this.showProduct = !this.showProduct
+        this.step = 2;
       },
       submitForm(){
         alert("Order Submitted.")
       },
-      canAddToCart () {
-        return this.product.availableInventory > this.cartItemCount;
-      }
+      canAddToCart(lesson){
+        return lesson.cart_quantity < lesson.availableInventory;
+      },
     },
     computed: {
       cartItemCount: function () {
