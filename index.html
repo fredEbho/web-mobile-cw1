@@ -141,6 +141,10 @@
           this.lessons.sort((a, b) => (a.subject > b.subject) ? this.sort_order === 'asc' ? 1 : -1: this.sort_order === 'asc' ? -1 : 1);
         if (this.sort_by === 'location')
           this.lessons.sort((a, b) => (a.location > b.location) ? this.sort_order === 'asc' ? 1 : -1: this.sort_order === 'asc' ? -1 : 1);
+        if (this.sort_by === 'price')
+          this.lessons.sort((a, b) => (a.price > b.price) ? this.sort_order === 'asc' ? 1 : -1: this.sort_order === 'asc' ? -1 : 1);
+        if (this.sort_by === 'spaces')
+          this.lessons.sort((a, b) => (a.spaces > b.spaces) ? this.sort_order === 'asc' ? 1 : -1: this.sort_order === 'asc' ? -1 : 1);
 
 
         return this.lessons;
