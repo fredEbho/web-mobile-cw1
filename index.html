@@ -160,7 +160,7 @@
         return this.cart.length;
       },
       canCheckout(){
-        return this.order.name.length > 0 && this.order.phone.length > 0 && /^[a-zA-Z]+$/.test(this.order.name) && /^\d+$/.test(this.order.phone);
+        return this.order.name.length > 0 && this.order.phone.length > 0 && /^[a-zA-Z\s]*$/.test(this.order.name) && /^\d+$/.test(this.order.phone);
       }
     }
   });
