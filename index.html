@@ -18,7 +18,7 @@
   <main>
     <p></p>
     <div v-if="step === 1">
-      <div>
+      <div style="margin-top: 5px;">
         <label for="sort_by"><strong>Sort By:</strong></label>
         <select id="sort_by" v-model="sort_by">
           <option disabled value="">None</option>
@@ -28,13 +28,17 @@
           <option value="spaces">Spaces</option>
         </select>
       </div>
-      <div>
-        <label for="sort_by"><strong>Sort Order:</strong></label>
+      <div style="margin-top: 5px;">
+        <label for="sort_order"><strong>Sort Order:</strong></label>
         <select id="sort_order" v-model="sort_order">
           <option disabled value="">None</option>
           <option value="asc">Ascending</option>
           <option value="desc">Descending</option>
         </select>
+      </div>
+      <div style="margin-top: 5px;">
+        <label for="search"><strong>Search:</strong></label>
+        <input id="search" type="search" name="search" v-model="search"/>
       </div>
       <div style="display: inline-block; padding: 10px" v-for="(lesson, index) in getLessons()">
         <p>Subject: {{lesson.subject}} <span  :class="lesson.icon"></span></p>
@@ -88,6 +92,7 @@
       return {
         step: 1,
         lessons,
+        search: '',
         sort_by: 'subject',
         sort_order: 'asc',
         sitename: 'Knowledge Bank Store',
@@ -100,9 +105,6 @@
       }
   },
     methods: {
-      isInCart(land){
-        return this.cart.find( ({ id }) => id === land.id );
-      },
       addToCart: function(lesson){
         let item = this.cart.find( ({ id }) => id === lesson.id );
         if (item){
@@ -139,10 +141,7 @@
           this.lessons.sort((a, b) => (a.subject > b.subject) ? this.sort_order === 'asc' ? 1 : -1: this.sort_order === 'asc' ? -1 : 1);
         if (this.sort_by === 'location')
           this.lessons.sort((a, b) => (a.location > b.location) ? this.sort_order === 'asc' ? 1 : -1: this.sort_order === 'asc' ? -1 : 1);
-        if (this.sort_by === 'price')
-          this.lessons.sort((a, b) => (a.price > b.price) ? this.sort_order === 'asc' ? 1 : -1: this.sort_order === 'asc' ? -1 : 1);
-        if (this.sort_by === 'spaces')
-          this.lessons.sort((a, b) => (a.spaces > b.spaces) ? this.sort_order === 'asc' ? 1 : -1: this.sort_order === 'asc' ? -1 : 1);
+
 
         return this.lessons;
       },
@@ -153,7 +152,7 @@
         return this.cart.length;
       },
       canCheckout(){
-        this.order.name.length > 0 && this.order.phone.length > 0 && /^[a-zA-Z]+$/.test(this.order.name) && /^\d+$/.test(this.order.phone);
+        return this.order.name.length > 0 && this.order.phone.length > 0 && /^[a-zA-Z]+$/.test(this.order.name) && /^\d+$/.test(this.order.phone);
       }
     }
   });
