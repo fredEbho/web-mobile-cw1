@@ -17,25 +17,21 @@
   </header>
   <main>
     <div v-if="step === 1">
-      <figure>
-        <img width="100" v-bind:src="product.image">
-      </figure>
-      <h2 v-text="product.title"></h2>
-      <p v-html="product.description"></p>
-      <p>Price: {{product.price}}</p>
-      <button :disabled="!canAddToCart" v-on:click="addToCart">
-        Add to cart
-      </button>
-      <span v-if="product.availableInventory === cartItemCount">
-                        All Out!
-                    </span>
-      <span v-else-if="product.availableInventory - cartItemCount < 5">
-                        Only {{product.availableInventory - cartItemCount}} left
-                    </span>
-      <span v-else>Buy now!</span>
-      <div>
-        <span v-for="n in product.rating">★</span>
-        <span v-for="n in 5 - product.rating">☆</span>
+      <div v-for="(lesson, index) in lessons">
+        <figure>
+          <img width="100" v-bind:src="lesson.image">
+        </figure>
+        <p>Subject: {{lesson.subject}}</p>
+        <p>Location: {{lesson.location}}</p>
+        <p>Price: {{lesson.price}}</p>
+        <p>Spaces: {{lesson.availableInventory}}</p>
+        <button :disabled="!canAddToCart(lesson)" v-on:click="addToCart">
+          Add to cart
+        </button>
+        <div>
+          <span v-for="n in product.rating">★</span>
+          <span v-for="n in 5 - product.rating">☆</span>
+        </div>
       </div>
     </div>
     <form v-else>
@@ -61,21 +57,13 @@
 
 
 <script type="text/javascript">
+  import lessonsData from "js/lessons.json"
   var webstore = new Vue({
     el: '#app',
     data: {
       step: 1,
       sitename: 'Knowledge Bank Store',
-      lessons: [
-        {
-          id: 1001,
-          subject: "Cat Food, 25lb bag",
-          location: "London",
-          price: 2000,
-          icon :"images/cat.jpeg",
-          availableInventory: 5
-        }
-      ],
+      lessons: lessonsData,
       order: {
         name: '',
         phone: '',
@@ -92,15 +80,15 @@
       },
       submitForm(){
         alert("Order Submitted.")
+      },
+      canAddToCart () {
+        return this.product.availableInventory > this.cartItemCount;
       }
     },
     computed: {
       cartItemCount: function () {
         return this.cart.length;
       },
-      canAddToCart: function () {
-        return this.product.availableInventory > this.cartItemCount;
-      }
     }
   });
 </script>
