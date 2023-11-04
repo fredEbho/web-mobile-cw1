@@ -12,25 +12,53 @@
     <h1 v-text="sitename"></h1>
     <button :disabled="cartItemCount < 1" v-on:click="showCheckout">
       {{cartItemCount}}
-      <span  class="fas fa-cart-plus"></span>  {{step === 1 ? 'CheckOut' : 'View Cart'}}
+      <span  class="fas fa-cart-plus"></span>  {{step === 1 ? 'View Shopping Cart' : 'Back To Lessons'}}
     </button>
   </header>
   <main>
+    <p></p>
     <div v-if="step === 1">
-      <div v-for="(lesson, index) in lessons">
-        <figure>
-          <img width="100" v-bind:src="lesson.image">
-        </figure>
-        <p>Subject: {{lesson.subject}}</p>
+      <div>
+        <label for="sort_by"><strong>Sort By:</strong></label>
+        <select id="sort_by" v-model="sort_by">
+          <option disabled value="">None</option>
+          <option value="subject">Subject</option>
+          <option value="location">Location</option>
+          <option value="price">Price</option>
+          <option value="spaces">Spaces</option>
+        </select>
+      </div>
+      <div>
+        <label for="sort_by"><strong>Sort Order:</strong></label>
+        <select id="sort_order" v-model="sort_order">
+          <option disabled value="">None</option>
+          <option value="asc">Ascending</option>
+          <option value="desc">Descending</option>
+        </select>
+      </div>
+      <div style="display: inline-block; padding: 10px" v-for="(lesson, index) in getLessons()">
+        <p>Subject: {{lesson.subject}} <span  :class="lesson.icon"></span></p>
         <p>Location: {{lesson.location}}</p>
         <p>Price: {{lesson.price}}</p>
-        <p>Spaces: {{lesson.availableInventory - lesson.cart_quantity}}</p>
+        <p>Spaces: {{lesson.spaces}}</p>
         <button :disabled="!canAddToCart(lesson)" v-on:click="addToCart(lesson)">
           Add to cart
         </button>
       </div>
     </div>
-    <form v-else>
+    <div v-if="step === 2">
+      <div style="display: inline-block; padding: 10px" v-for="(lesson, index) in cart">
+        <p>Subject: {{lesson.subject}} <span  :class="lesson.icon"></span></p>
+        <p>Location: {{lesson.location}}</p>
+        <p>Price: {{lesson.price}}</p>
+        <p>Spaces: {{lesson.spaces}}</p>
+        <p>Quantity In Cart: {{lesson.cart_quantity}}</p>
+        <button v-on:click="removeFromCart(lesson)">
+          Remove
+        </button>
+      </div>
+    </div>
+    <form v-if="step === 2">
       <div>
         <h2>Checkout</h2>
         <p>
@@ -42,7 +70,7 @@
           <input id="phone" v-model.trim="order.phone"/>
         </p>
 
-        <button type="submit" v-on:click="submitForm">
+        <button :disabled="" type="submit" v-on:click="submitForm">
           Checkout
         </button>
       </div>
@@ -60,6 +88,8 @@
       return {
         step: 1,
         lessons,
+        sort_by: 'subject',
+        sort_order: 'asc',
         sitename: 'Knowledge Bank Store',
         order: {
           name: '',
@@ -77,8 +107,10 @@
         let item = this.cart.find( ({ id }) => id === lesson.id );
         if (item){
           item.cart_quantity += 1;
+          item.spaces -= 1;
         }
         else {
+          lesson.spaces -= 1;
           lesson.cart_quantity = 1;
           this.cart.push(lesson);
         }
@@ -88,10 +120,33 @@
       },
       submitForm(){
         alert("Order Submitted.")
+        window.reload();
       },
       canAddToCart(lesson){
-        return lesson.cart_quantity < lesson.availableInventory;
+        return lesson.spaces > 0;
       },
+      removeFromCart(lesson){
+        this.cart.splice(this.cart.indexOf(lesson), 1);
+        let item = this.lessons.find( ({ id }) => id === lesson.id );
+        item.spaces = 5;
+        item.cart_quantity = 0;
+        if (this.cartItemCount < 1){
+          this.step = 1;
+        }
+      },
+      getLessons(){
+        if (this.sort_by === 'subject')
+          this.lessons.sort((a, b) => (a.subject > b.subject) ? this.sort_order === 'asc' ? 1 : -1: this.sort_order === 'asc' ? -1 : 1);
+        if (this.sort_by === 'location')
+          this.lessons.sort((a, b) => (a.location > b.location) ? this.sort_order === 'asc' ? 1 : -1: this.sort_order === 'asc' ? -1 : 1);
+        if (this.sort_by === 'price')
+          this.lessons.sort((a, b) => (a.price > b.price) ? this.sort_order === 'asc' ? 1 : -1: this.sort_order === 'asc' ? -1 : 1);
+        if (this.sort_by === 'spaces')
+          this.lessons.sort((a, b) => (a.spaces > b.spaces) ? this.sort_order === 'asc' ? 1 : -1: this.sort_order === 'asc' ? -1 : 1);
+
+        return this.lessons;
+      },
+
     },
     computed: {
       cartItemCount: function () {
