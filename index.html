@@ -1,84 +1,214 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <title>Knowledge Bank Store</title>
   <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
-  <script defer src="https://use.fontawesome.com/releases/v5.15.4/js/all.js" integrity="sha384-rOA1PnstxnOBLzCLMcre8ybwbTmemjzdNlILg8O7z1lUkLXozs4DHonlDtnE7fpc" crossorigin="anonymous"></script>
+  <script defer src="https://use.fontawesome.com/releases/v5.15.4/js/all.js"
+          integrity="sha384-rOA1PnstxnOBLzCLMcre8ybwbTmemjzdNlILg8O7z1lUkLXozs4DHonlDtnE7fpc"
+          crossorigin="anonymous"></script>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" >
+  <link rel="stylesheet" href="style.css">
+
+
+  <link href="https://fonts.googleapis.com/css2?family=Lato&display=swap" rel="stylesheet">
+
+
+  <style>
+    .step-one {
+      margin-top: 10px;
+
+      height: 750px;
+      overflow-y: scroll;
+    }
+
+    .input {
+      border-radius: 8px;
+      border: 1px solid var(--neutral-100, #E7EAEE);
+      background: #FBFBFB;
+      width: 200px;
+      padding: 6px;
+      outline: none!important;
+      font-size: 13px;
+    }
+
+    label {
+      margin-bottom: 10px;
+      font-size: 14px;
+    }
+
+    main {
+      box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.075);
+      background-color: white;
+      width: 1000px;
+      border-radius: 6px;
+    }
+
+
+    body {
+      display: flex;
+      justify-content: center;
+      background-color: #f6f6f6;
+      font-family: 'Lato', sans-serif;
+
+    }
+    .badge:after{
+      content:attr(value);
+      font-size:12px;
+      color: #fff;
+      background: red;
+      border-radius:50%;
+      padding: 0 5px;
+      position:relative;
+      left:-8px;
+      top:-10px;
+      opacity:0.9;
+    }
+  </style>
 </head>
+
+
 <body>
-<div id="app">
+<div id="app" class="p-5">
   <header>
-    <h1 v-text="sitename"></h1>
-    <button v-if="step === 1" :disabled="cartItemCount < 1" v-on:click="showCheckout">
-      {{cartItemCount}}
-      <span  class="fas fa-cart-plus"></span>  View Shopping Cart
-    </button>
-    <button v-else v-on:click="showLessons">
-      Back To Lessons
-    </button>
+    <div class="text-center" style="font-size: 25px; margin-bottom: 50px;" v-text="sitename"></div>
+
   </header>
   <main>
     <p></p>
-    <div v-if="step === 1">
-      <div style="margin-top: 5px;">
-        <label for="sort_by"><strong>Sort By:</strong></label>
-        <select id="sort_by" v-model="sort_by">
-          <option disabled value="">None</option>
-          <option value="subject">Subject</option>
-          <option value="location">Location</option>
-          <option value="price">Price</option>
-          <option value="spaces">Spaces</option>
-        </select>
-      </div>
-      <div style="margin-top: 5px;">
-        <label for="sort_order"><strong>Sort Order:</strong></label>
-        <select id="sort_order" v-model="sort_order">
-          <option disabled value="">None</option>
-          <option value="asc">Ascending</option>
-          <option value="desc">Descending</option>
-        </select>
-      </div>
-      <div style="margin-top: 5px;">
-        <label for="search"><strong>Search:</strong></label>
-        <input id="search" type="search" name="search" v-model="search"/>
-      </div>
-      <div style="display: inline-block; padding: 10px" v-for="(lesson, index) in getLessons()">
-        <p>Subject: {{lesson.subject}} <span  :class="lesson.icon"></span></p>
-        <p>Location: {{lesson.location}}</p>
-        <p>Price: {{lesson.price}}</p>
-        <p>Spaces: {{lesson.spaces}}</p>
-        <button :disabled="!canAddToCart(lesson)" v-on:click="addToCart(lesson)">
-          Add to cart
-        </button>
+    <div v-if="step === 1" class="step-one">
+      <div class="px-4 py-4 justify-content-center">
+        <div class="">
+          <div class="d-flex justify-content-between my-2">
+            <div style="margin-top: 5px;" class="me-5">
+              <label for="sort_by">Sort By:</label>
+              <select id="sort_by" v-model="sort_by" class="input ml-2">
+                <option disabled value="">None</option>
+                <option value="subject">Subject</option>
+                <option value="location">Location</option>
+                <option value="price">Price</option>
+                <option value="spaces">Spaces</option>
+              </select>
+
+              <div style="margin-top: 15px;">
+                <label for="sort_order">Sort Order:</label>
+                <select id="sort_order" v-model="sort_order" class="input ml-2">
+                  <option disabled value="">None</option>
+                  <option value="asc">Ascending</option>
+                  <option value="desc">Descending</option>
+                </select>
+              </div>
+            </div>
+
+
+            <div style="margin-top: 20px;" class="mb-4">
+              <label for="search">Search:</label>
+              <input id="search" type="search" name="search" v-model="search" class=" input ml-2" />
+            </div>
+          </div>
+
+          <div class="d-flex justify-content-between align-items-center border-bottom mt-5 py-2">
+            <div class="col-4">Subject</div>
+            <div class="col-2 justify-content-end ml-auto">Location</div>
+            <div class="col-2">Price</div>
+            <div class="col-2">Spaces</div>
+            <div class="col-2"></div>
+          </div>
+
+          <div style="display: inline-block; padding: 30px 0px 30px; border-bottom: 1px solid rgb(235, 227, 227);" v-for="(lesson, index) in getLessons()"
+               class="d-flex justify-content-between">
+            <div class="col-4 d-flex ">
+              <p> <span style="font-size: 80px;" :class="lesson.icon"></span></p> <p style="margin-left: 20px;">{{lesson.subject}} </p>
+
+            </div>
+            <div class="col-2 justify-content-end ml-auto">
+              <p>{{lesson.location}}</p>
+            </div>
+            <div class="col-2 ">
+              <p>{{lesson.price}}</p>
+            </div>
+            <div class="col-2">
+              <p class="mx-4">{{lesson.spaces}}</p>
+            </div>
+            <div class="col-2 text-center">
+              <button type="button" :disabled="!canAddToCart(lesson)" v-on:click="addToCart(lesson)" class="rounded-2 btn btn-info p-3 text-white" style="border-radius: 6px; cursor: pointer;">
+                <span class="fas fa-cart-plus"></span>
+                Add to cart
+              </button>
+            </div>
+
+
+          </div>
+        </div>
+
+        <div class="d-flex justify-content-center ml-auto mb-3 fixed-bottom" >
+          <button type="button" :disabled="cartItemCount < 1" v-on:click="showCheckout" class="btn btn-info p-3 rounded-2 text-white"  style="border-radius: 6px;  cursor: pointer;">
+            {{cartItemCount}}
+            <span class="fas fa-shopping-cart"></span>
+            View Cart
+          </button>
+        </div>
       </div>
     </div>
-    <div v-if="step === 2">
-      <div style="display: inline-block; padding: 10px" v-for="(lesson, index) in cart">
-        <p>Subject: {{lesson.subject}} <span  :class="lesson.icon"></span></p>
-        <p>Location: {{lesson.location}}</p>
-        <p>Price: {{lesson.price}}</p>
-        <p>Spaces: {{lesson.spaces}}</p>
-        <p>Quantity In Cart: {{lesson.cart_quantity}}</p>
-        <button v-on:click="removeFromCart(lesson)">
-          Remove
-        </button>
+
+
+    <div v-if="step === 2" class="px-4 py-4 justify-content-center">
+
+      <div class="d-flex justify-content-between align-items-center border-bottom mt-4 py-2" >
+        <div class="col-4">Subject</div>
+        <div class="col-2 justify-content-end ml-auto">Location:</div>
+        <div class="col-2 ">Price</div>
+        <div class="col-2">Quantity In Cart:</div>
+        <div class="col-2"></div>
+      </div>
+
+      <div style="display: inline-block;" v-for="(lesson, index) in cart"  class="d-flex justify-content-between mt-4">
+        <div class="col-4 d-flex ">
+          <p> <span style="font-size: 80px;" :class="lesson.icon"></span></p> <p style="margin-left: 20px;">{{lesson.subject}} </p>
+        </div>
+        <div class="col-2 justify-content-end ml-auto ">
+          <p>{{lesson.location}}</p>
+        </div>
+
+        <div class="col-2">
+          <p>{{lesson.price}}</p>
+        </div>
+
+        <div class="col-2">
+          <p>{{lesson.cart_quantity}}</p>
+        </div>
+
+
+        <div class="col-2 text-center ">
+          <button v-on:click="removeFromCart(lesson)"  class="border border-none  p-2 rounded-2 bg-info text-white" style="border-radius: 6px;  cursor: pointer; margin-left: -40px;">
+            Remove
+          </button>
+        </div>
       </div>
     </div>
-    <form v-if="step === 2">
+
+    <form v-if="step === 2" class="px-5 py-4 justify-content-center ">
       <div>
-        <h2>Checkout</h2>
-        <p>
+        <h2 style="font-size: 21px; margin-bottom: 15px;">Checkout</h2>
+        <p >
           <label for="name"><strong>Name:</strong></label>
-          <input id="name" v-model.trim="order.name"/>
+          <input id="name" v-model.trim="order.name" class="input ml-2" />
         </p>
         <p>
           <label for="phone"><strong>Phone:</strong></label>
-          <input id="phone" v-model.trim="order.phone"/>
+          <input id="phone" v-model.trim="order.phone" class="input ml-2" />
         </p>
 
-        <button :disabled="!canCheckout" type="submit" v-on:click="submitForm">
+        <button :disabled="!canCheckout" type="submit" v-on:click="submitForm" class="btn btn-info p-3 rounded-2 text-white mt-4" style="border-radius: 6px;">
           Checkout
+        </button>
+      </div>
+
+      <div class="d-flex justify-content-center ml-auto mb-3 fixed-bottom" >
+        <button v-on:click="showLessons" class="border border-none p-3 rounded-2 bg-info text-white" style="border-radius: 6px;  cursor: pointer;">
+          <span class="fas fa-arrow-left"></span>
+          Back To Lessons
         </button>
       </div>
     </form>
@@ -87,11 +217,11 @@
 </div>
 
 
-<script  type="module">
+<script type="module">
   import lessons from "./js/lessons.json" assert { type: 'json' };
   var webstore = new Vue({
     el: '#app',
-    data (){
+    data() {
       return {
         step: 1,
         lessons,
@@ -106,11 +236,11 @@
         cart: [],
 
       }
-  },
+    },
     methods: {
-      addToCart: function(lesson){
-        let item = this.cart.find( ({ id }) => id === lesson.id );
-        if (item){
+      addToCart: function (lesson) {
+        let item = this.cart.find(({ id }) => id === lesson.id);
+        if (item) {
           item.cart_quantity += 1;
           item.spaces -= 1;
         }
@@ -120,39 +250,39 @@
           this.cart.push(lesson);
         }
       },
-      showCheckout(){
+      showCheckout() {
         this.step = 2;
       },
-      showLessons(){
+      showLessons() {
         this.step = 1;
       },
-      submitForm(){
+      submitForm() {
         alert("Order Submitted.")
         window.reload();
       },
-      canAddToCart(lesson){
+      canAddToCart(lesson) {
         return lesson.spaces > 0;
       },
-      removeFromCart(lesson){
+      removeFromCart(lesson) {
         this.cart.splice(this.cart.indexOf(lesson), 1);
-        let item = this.lessons.find( ({ id }) => id === lesson.id );
+        let item = this.lessons.find(({ id }) => id === lesson.id);
         item.spaces = 5;
         item.cart_quantity = 0;
-        if (this.cartItemCount < 1){
+        if (this.cartItemCount < 1) {
           this.step = 1;
         }
       },
-      getLessons(){
+      getLessons() {
         if (this.sort_by === 'subject')
-          this.lessons.sort((a, b) => (a.subject > b.subject) ? this.sort_order === 'asc' ? 1 : -1: this.sort_order === 'asc' ? -1 : 1);
+          this.lessons.sort((a, b) => (a.subject > b.subject) ? this.sort_order === 'asc' ? 1 : -1 : this.sort_order === 'asc' ? -1 : 1);
         if (this.sort_by === 'location')
-          this.lessons.sort((a, b) => (a.location > b.location) ? this.sort_order === 'asc' ? 1 : -1: this.sort_order === 'asc' ? -1 : 1);
+          this.lessons.sort((a, b) => (a.location > b.location) ? this.sort_order === 'asc' ? 1 : -1 : this.sort_order === 'asc' ? -1 : 1);
         if (this.sort_by === 'price')
-          this.lessons.sort((a, b) => (a.price > b.price) ? this.sort_order === 'asc' ? 1 : -1: this.sort_order === 'asc' ? -1 : 1);
+          this.lessons.sort((a, b) => (a.price > b.price) ? this.sort_order === 'asc' ? 1 : -1 : this.sort_order === 'asc' ? -1 : 1);
         if (this.sort_by === 'spaces')
-          this.lessons.sort((a, b) => (a.spaces > b.spaces) ? this.sort_order === 'asc' ? 1 : -1: this.sort_order === 'asc' ? -1 : 1);
+          this.lessons.sort((a, b) => (a.spaces > b.spaces) ? this.sort_order === 'asc' ? 1 : -1 : this.sort_order === 'asc' ? -1 : 1);
 
-        if (this.search.length > 1){
+        if (this.search.length > 1) {
           let e = this.search.toLowerCase();
           return this.lessons.filter((lesson) => (lesson.subject.toLowerCase().indexOf(e) > -1 || lesson.location.toLowerCase().indexOf(e) > -1))
         }
@@ -165,7 +295,7 @@
       cartItemCount: function () {
         return this.cart.length;
       },
-      canCheckout(){
+      canCheckout() {
         return this.order.name.length > 0 && this.order.phone.length > 0 && /^[a-zA-Z\s]*$/.test(this.order.name) && /^\d+$/.test(this.order.phone);
       }
     }
