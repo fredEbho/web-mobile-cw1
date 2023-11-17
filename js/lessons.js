@@ -20,7 +20,7 @@
    {
      "id": 1003,
      "subject": "Physics",
-     "location": "London",
+     "location": "Madrid",
      "price": 2300,
      "icon" :"fas fa-atlas",
      "spaces": 5,
@@ -29,7 +29,7 @@
    {
      "id": 1004,
      "subject": "Chemistry",
-     "location": "Dubai",
+     "location": "Barcelona",
      "price": 2400,
      "icon" :"fas fa-book",
      "spaces": 5,
@@ -38,7 +38,7 @@
    {
    "id": 1005,
    "subject": "Biology",
-   "location": "London",
+   "location": "Helsinki",
    "price": 2550,
    "icon" :"fas fa-book-medical",
    "spaces": 5,
@@ -47,7 +47,7 @@
    {
      "id": 1006,
      "subject": "Commerce",
-     "location": "Dubai",
+     "location": "Valletta",
      "price": 2100,
      "icon" :"fas fa-book",
      "spaces": 5,
@@ -56,7 +56,7 @@
    {
      "id": 1007,
      "subject": "History",
-     "location": "Dubai",
+     "location": "Nairobi",
      "price": 1800,
      "icon" :"fas fa-quran",
      "spaces": 5,
@@ -65,7 +65,7 @@
    {
      "id": 1008,
      "subject": "Economics",
-     "location": "Dubai",
+     "location": "Lagos",
      "price": 1900,
      "icon" :"fas fa-book",
      "spaces": 5,
@@ -74,7 +74,7 @@
    {
      "id": 1009,
      "subject": "Further Mathematics",
-     "location": "London",
+     "location": "Sao Paulo",
      "price": 2900,
      "icon" :"fas fa-book",
      "spaces": 5,
@@ -83,7 +83,7 @@
    {
      "id": 1010,
      "subject": "Agricultural Science",
-     "location": "Dubai",
+     "location": "Delhi",
      "price": 2600,
      "icon" :"fas fa-book",
      "spaces": 5,
