@@ -233,7 +233,7 @@
           phone: '',
         },
         cart: [],
-        base_url: 'http://localhost:4000',
+        base_url: 'http://web-mobile-coursework2.eu-west-2.elasticbeanstalk.com',
         image_base_url: 'http://web-mobile-coursework2.eu-west-2.elasticbeanstalk.com/public'
       }
     },
@@ -293,7 +293,7 @@
           .then(responseJSON => {
             this.reduceLessonQuantity(lessonIds);
             alert("Order Submitted.");
-            //location.reload();
+            location.reload();
           })
           .catch((error) => {
             console.log(error)
