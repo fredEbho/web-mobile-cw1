@@ -86,7 +86,7 @@
               <label for="sort_by">Sort By:</label>
               <select id="sort_by" v-model="sort_by" class="input ml-2">
                 <option disabled value="">None</option>
-                <option value="subject">Subject</option>
+                <option value="topic">Subject</option>
                 <option value="location">Location</option>
                 <option value="price">Price</option>
                 <option value="spaces">Spaces</option>
@@ -120,7 +120,7 @@
           <div style="display: inline-block; padding: 30px 0px 30px; border-bottom: 1px solid rgb(235, 227, 227);" v-for="(lesson, index) in getLessons()"
                class="d-flex justify-content-between">
             <div class="col-4 d-flex ">
-              <p> <span style="font-size: 80px;" :class="lesson.icon"></span></p> <p style="margin-left: 20px;">{{lesson.subject}} </p>
+              <p> <span style="font-size: 80px;" :class="lesson.icon"></span></p> <p style="margin-left: 20px;">{{lesson.topic}} </p>
 
             </div>
             <div class="col-2 justify-content-end ml-auto">
@@ -166,7 +166,7 @@
 
       <div style="display: inline-block;" v-for="(lesson, index) in cart"  class="d-flex justify-content-between mt-4">
         <div class="col-4 d-flex ">
-          <p> <span style="font-size: 80px;" :class="lesson.icon"></span></p> <p style="margin-left: 20px;">{{lesson.subject}} </p>
+          <p> <span style="font-size: 80px;" :class="lesson.icon"></span></p> <p style="margin-left: 20px;">{{lesson.topic}} </p>
         </div>
         <div class="col-2 justify-content-end ml-auto ">
           <p>{{lesson.location}}</p>
@@ -226,7 +226,7 @@
         step: 1,
         lessons: lessons,
         search: '',
-        sort_by: 'subject',
+        sort_by: 'topic',
         sort_order: 'asc',
         sitename: 'Knowledge Bank Store',
         order: {
@@ -273,8 +273,8 @@
         }
       },
       getLessons() {
-        if (this.sort_by === 'subject')
-          this.lessons.sort((a, b) => (a.subject > b.subject) ? this.sort_order === 'asc' ? 1 : -1 : this.sort_order === 'asc' ? -1 : 1);
+        if (this.sort_by === 'topic')
+          this.lessons.sort((a, b) => (a.topic > b.topic) ? this.sort_order === 'asc' ? 1 : -1 : this.sort_order === 'asc' ? -1 : 1);
         if (this.sort_by === 'location')
           this.lessons.sort((a, b) => (a.location > b.location) ? this.sort_order === 'asc' ? 1 : -1 : this.sort_order === 'asc' ? -1 : 1);
         if (this.sort_by === 'price')
@@ -284,7 +284,7 @@
 
         if (this.search.length > 1) {
           let e = this.search.toLowerCase();
-          return this.lessons.filter((lesson) => (lesson.subject.toLowerCase().indexOf(e) > -1 || lesson.location.toLowerCase().indexOf(e) > -1))
+          return this.lessons.filter((lesson) => (lesson.topic.toLowerCase().indexOf(e) > -1 || lesson.location.toLowerCase().indexOf(e) > -1))
         }
 
         return this.lessons;
