@@ -141,11 +141,24 @@
             <div  style="display: inline-block; padding: 30px 0px 30px; border-bottom: 1px solid rgb(235, 227, 227);" v-for="(lesson, index) in getLessons()"
                  class="d-flex justify-content-between">
               <div class="col-4 d-flex ">
-                <p> <img style="height: 50px; width: 50px;" :alt="lesson.topic" :src="getImageUrl(lesson.image)"></img></p> <p style="margin-left: 20px;">{{lesson.topic}} </p>
-
+                <p> <img style="height: 50px; width: 50px;" :alt="lesson.topic" :src="getImageUrl(lesson.image)"></img></p>
+                <p style="margin-left: 20px;">
+                  Add text highlighting to searched text
+                  <template v-for="(fragment, i) in lesson.topic.toString().split(new RegExp(`(?<=${search})|(?=${search})`, 'i'))">
+                    <mark v-if="fragment.toLowerCase() === search.toLowerCase()" :key="i" class="text-warning">
+                      {{ fragment }}
+                    </mark>
+                    <template v-else>{{ fragment }}</template>
+                  </template>
+                </p>
               </div>
               <div class="col-2 justify-content-end ml-auto">
-                <p>{{lesson.location}}</p>
+                <template v-for="(fragment, i) in lesson.location.toString().split(new RegExp(`(?<=${search})|(?=${search})`, 'i'))">
+                  <mark v-if="fragment.toLowerCase() === search.toLowerCase()" :key="i" class="text-warning">
+                    {{ fragment }}
+                  </mark>
+                  <template v-else>{{ fragment }}</template>
+                </template>
               </div>
               <div class="col-2 ">
                 <p>${{lesson.price}}</p>
