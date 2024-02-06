@@ -320,8 +320,8 @@
       },
       submitForm() {
         this.isLoading = true;
-        let lessonIds = this.cart.map(item => item.id);
-        let lessonsInOrder = this.cart.map(item => ({id: item.id, topic: item.topic,location: item.location, quantity: 1}));
+        let lessonIds = this.cart.map(item => item._id);
+        let lessonsInOrder = this.cart.map(item => ({id: item._id, topic: item.topic,location: item.location, quantity: 1}));
         fetch(`${this.base_url}/order`, {
           method: 'POST', // set the HTTP method as 'POST'
           headers: {
