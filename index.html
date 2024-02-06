@@ -3,7 +3,7 @@
 
 <head>
   <meta charset="UTF-8">
-  <title>Knowledge Bank Store</title>
+  <title>Books Store</title>
   <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
   <script src="js/lessons.js"></script>
   <script defer src="https://use.fontawesome.com/releases/v5.15.4/js/all.js"
@@ -266,7 +266,7 @@
         search: '',
         sort_by: 'topic',
         sort_order: 'asc',
-        sitename: 'Knowledge Bank Store',
+        sitename: 'Books Store',
         order: {
           name: '',
           phone: '',
@@ -320,13 +320,14 @@
       },
       submitForm() {
         this.isLoading = true;
-        let lessonIds = this.cart.map((item) => item._id);
+        let lessonIds = this.cart.map(item => item.id);
+        let lessonsInOrder = this.cart.map(item => ({id: item.id, name: item.name,quantity: 1}));
         fetch(`${this.base_url}/order`, {
           method: 'POST', // set the HTTP method as 'POST'
           headers: {
             'Content-Type': 'application/json', // set the data type as JSON
           },
-          body: JSON.stringify({...this.order,lessonIds}), // need to stringify the JSON object
+          body: JSON.stringify({...this.order,lessonsInOrder}), // need to stringify the JSON object
         })
           .then(response => response.json())
           .then(responseJSON => {
