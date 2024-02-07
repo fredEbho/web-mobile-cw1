@@ -319,8 +319,9 @@
         this.step = 1;
       },
       submitForm() {
+        let context = this;
         this.isLoading = true;
-        let lessonsInOrder = this.cart.map(item => ({id: item._id, topic: item.topic,location: item.location, quantity: item.cart_quantity}));
+        let lessonsInOrder = this.cart.map(item => ({id: item._id, topic: item.topic,location: item.location, numberOfSpaces: item.cart_quantity}));
         fetch(`${this.base_url}/order`, {
           method: 'POST', // set the HTTP method as 'POST'
           headers: {
@@ -330,9 +331,10 @@
         })
           .then(response => response.json())
           .then(responseJSON => {
-            for (let lesson in lessonsInOrder){
-              this.reduceLessonQuantity(lesson.id, lesson.quantity);
-            }
+            this.cart.forEach((lesson) => {
+              console.log(lesson);
+              this.reduceLessonQuantity(lesson._id, lesson.cart_quantity);
+            });
             alert("Order Submitted.");
             location.reload();
           })
@@ -344,12 +346,14 @@
 
       },
       reduceLessonQuantity(lessonId, reduceByQuantity){
+        console.log(lessonId);
+        console.log(reduceByQuantity);
         fetch(`${this.base_url}/lesson`, {
-          method: 'PUT', // set the HTTP method as 'POST'
+          method: 'PUT', // set the HTTP method as 'PUT'
           headers: {
             'Content-Type': 'application/json', // set the data type as JSON
           },
-          body: {lessonId, reduceByQuantity}, // need to stringify the JSON object
+          body: JSON.stringify({lessonId: lessonId, reduceByQuantity: reduceByQuantity}), // need to stringify the JSON object
         })
       },
       canAddToCart(lesson) {
