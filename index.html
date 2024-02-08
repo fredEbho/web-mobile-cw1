@@ -319,7 +319,6 @@
         this.step = 1;
       },
       submitForm() {
-        let context = this;
         this.isLoading = true;
         let lessonsInOrder = this.cart.map(item => ({id: item._id, topic: item.topic,location: item.location, numberOfSpaces: item.cart_quantity}));
         fetch(`${this.base_url}/order`, {
@@ -331,8 +330,8 @@
         })
           .then(response => response.json())
           .then(responseJSON => {
+            //loop through all lessons bought and subtract the quantity bought
             this.cart.forEach((lesson) => {
-              console.log(lesson);
               this.reduceLessonQuantity(lesson._id, lesson.cart_quantity);
             });
             alert("Order Submitted.");
@@ -346,8 +345,6 @@
 
       },
       reduceLessonQuantity(lessonId, reduceByQuantity){
-        console.log(lessonId);
-        console.log(reduceByQuantity);
         fetch(`${this.base_url}/lesson`, {
           method: 'PUT', // set the HTTP method as 'PUT'
           headers: {
